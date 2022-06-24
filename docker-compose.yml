@@ -1,0 +1,41 @@
+version: '3.7'
+
+services:
+  api:
+    build:
+      context: ./
+      target: dev
+    ports:
+      - 9090:80
+    depends_on:
+      - database
+    environment:
+      - PORT=80
+      - DATASOURCE_URL=database
+      - DATASOURCE_SCHEMA=portal_db
+      - DATASOURCE_USERNAME=root
+      - DATASOURCE_PASSWORD=S3cret
+    restart: on-failure
+    deploy:
+      resources:
+        limits:
+          cpus: 0.50
+          memory: 512M
+
+  database:
+    image: mariadb:10.7
+    ports:
+      - 3306:3306
+    volumes:
+      - ./database/data/:/var/lib/mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=S3cret
+      - MYSQL_PASSWORD=An0thrS3crt
+      - MYSQL_USER=portal_user
+      - MYSQL_DATABASE=portal_db
+    restart: always
+    deploy:
+      resources:
+        limits:
+          cpus: 1
+          memory: 2048M
