@@ -16,6 +16,12 @@ services:
       - DATASOURCE_USERNAME=root
       - DATASOURCE_PASSWORD=S3cret
     restart: on-failure
+    healthcheck:
+      test: "curl --fail --silent localhost/actuator/health -u 'user:password' | grep UP || exit 1"
+      interval: 30s
+      timeout: 5s
+      retries: 5
+      start_period: 30s
     deploy:
       resources:
         limits:
