@@ -1,5 +1,7 @@
 package br.com.araujoit.services;
 
+import java.util.Optional;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,6 +17,10 @@ public class PostService implements DatetimeHelper {
 
 	public Iterable<Post> listAll() {
 		return postRepository.findAll();
+	}
+	
+	public Optional<Post> getById(Long id) {
+		return postRepository.findById(id);
 	}
 
 	public Post put(Post post) {
