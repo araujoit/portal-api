@@ -8,9 +8,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import br.com.araujoit.entities.Post;
@@ -44,8 +46,20 @@ public class PostController {
 		return ResponseEntity.noContent().build();
 	}
 	
-	@PutMapping(consumes = "application/json", produces = "application/json")
+	@GetMapping(value = "/search", produces = "application/json")
+	public ResponseEntity<?> searchBySubject(@RequestParam(value = "subject") String subject) {
+		return ResponseEntity.ok(postService.searchBySubjectContaining(subject));
+	}
+	
+	@PostMapping(consumes = "application/json", produces = "application/json")
 	public ResponseEntity<Post> create(@RequestBody Post post) {
+		final Post savedPost = postService.put(post);
+		return new ResponseEntity(savedPost, HttpStatus.OK);
+	}
+	
+	@PutMapping(value = "/{id}", consumes = "application/json", produces = "application/json")
+	public ResponseEntity<Post> update(@PathVariable(value = "id") Long id, @RequestBody Post post) {
+		post.setId(id);
 		final Post savedPost = postService.put(post);
 		return new ResponseEntity(savedPost, HttpStatus.OK);
 	}

@@ -8,4 +8,5 @@ import br.com.araujoit.entities.Post;
 @Repository
 public interface PostRepository extends CrudRepository<Post, Long> {
 
+	Iterable<Post> findBySubjectContaining(String name);
 }

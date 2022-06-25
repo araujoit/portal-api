@@ -22,6 +22,10 @@ public class PostService implements DatetimeHelper {
 	public Optional<Post> getById(Long id) {
 		return postRepository.findById(id);
 	}
+	
+	public Iterable<Post> searchBySubjectContaining(String subject) {
+		return postRepository.findBySubjectContaining(subject);
+	}
 
 	public Post put(Post post) {
 		post.setUpdatedAt(now());
